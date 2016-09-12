@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/lasote/conan-gtest.svg)](https://travis-ci.org/lasote/conan-gtest)
 
 
-# conan-gtest
+# conan-googletest
 
 [Conan.io](https://conan.io) package for Google test library
 
