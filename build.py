@@ -31,5 +31,5 @@ if __name__ == "__main__":
     
     builder = ConanMultiPackager(reference=reference, username=username, channel=channel)    
     builder.add({"arch": "x86_64", "build_type": "Release", "compiler": "Visual Studio", "compiler.runtime":"MD" } )
-    #builder.add({"arch": "x86_64", "build_type": "Debug"  , "compiler": "Visual Studio", "compiler.runtime":"MDd"} )
+    builder.add({"arch": "x86_64", "build_type": "Debug"  , "compiler": "Visual Studio", "compiler.runtime":"MDd"} )
     builder.run()

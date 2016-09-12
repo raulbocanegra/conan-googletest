@@ -16,7 +16,7 @@ class GoogleTestConan(ConanFile):
                "build_gtest": [True, False],
                "build_gmock": [True, False]}
     default_options = ("shared=True", "build_gtest=False", "build_gmock=True")
-    #exports = "CMakeLists.txt"
+    exports = "FindGoogleTest.cmake"
     #url="http://github.com/rboc/conan-googletest"
     license="https://github.com/google/googletest/blob/master/googletest/LICENSE"
     
@@ -54,11 +54,13 @@ class GoogleTestConan(ConanFile):
         self.copy(pattern="*.dll", dst="bin", src=".", keep_path=False)
         self.copy(pattern="*.so*", dst="lib", src=".", keep_path=False)
         self.copy(pattern="*.dylib*", dst="lib", src=".", keep_path=False)      
-
+        self.copy("FindGoogleTest.cmake", dst="", src="") 
+        
     def package_info(self):
         self.cpp_info.libs = ['gtest', 'gtest_main']
         if (self.options.build_gmock):
             self.cpp_info.libs.append("gmock")
+            self.cpp_info.libs.append("gmock_main")
         if self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")
         
