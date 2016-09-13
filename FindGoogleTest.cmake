@@ -1,3 +1,4 @@
+message(STATUS "********* Conan FindGoogleTest wrapper! **********")
 #.rst:
 # FindGoogleTest
 # ---------
@@ -129,7 +130,7 @@ set(GOOGLETEST_INCLUDE_DIR ${CONAN_INCLUDE_DIRS_GOOGLETEST})
 set(GOOGLETEST_LIBRARY_DIR ${CONAN_LIB_DIRS_GOOGLETEST})
 set(GOOGLETEST_SHAREDLIB_DIR ${CONAN_BIN_DIRS_GOOGLETEST})
 
-if(GOOGLETEST_INCLUDE_DIRS AND GOOGLETEST_LIBRARY_DIR)
+if(GOOGLETEST_INCLUDE_DIR AND GOOGLETEST_LIBRARY_DIR)
     set(GOOGLETEST_FOUND true)
 endif()
 
@@ -141,7 +142,7 @@ if(GOOGLETEST_FOUND)
     include(CMakeFindDependencyMacro)
     find_dependency(Threads)
     
-    set (LIBRARY_TYPE "STATIC")
+    set (LIBRARY_TYPE "UNKNOWN")
     if(BUILD_SHARED_LIBS)
         set (LIBRARY_TYPE "SHARED")
     endif()
