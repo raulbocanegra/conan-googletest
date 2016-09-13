@@ -130,7 +130,7 @@ set(GOOGLETEST_LIBRARY_DIR ${CONAN_LIB_DIRS_GOOGLETEST})
 set(GOOGLETEST_SHAREDLIB_DIR ${CONAN_BIN_DIRS_GOOGLETEST})
 
 if(GOOGLETEST_INCLUDE_DIRS AND GOOGLETEST_LIBRARY_DIR)
-   set(GOOGLETEST_FOUND true)
+    set(GOOGLETEST_FOUND true)
 endif()
 
 if(GOOGLETEST_FOUND)
@@ -140,64 +140,82 @@ if(GOOGLETEST_FOUND)
 
     include(CMakeFindDependencyMacro)
     find_dependency(Threads)
+    
+    set (LIBRARY_TYPE "STATIC")
+    if(BUILD_SHARED_LIBS)
+        set (LIBRARY_TYPE "SHARED")
+    endif()
 
     if(NOT TARGET GoogleTest::GTest)
-        add_library(GoogleTest::GTest UNKNOWN IMPORTED)
+        add_library(GoogleTest::GTest ${LIBRARY_TYPE} IMPORTED)
+        
         set_target_properties(GoogleTest::GTest PROPERTIES
             INTERFACE_LINK_LIBRARIES "Threads::Threads"
             INTERFACE_INCLUDE_DIRECTORIES "${GOOGLETEST_INCLUDE_DIRS}")
-               
+        
         if(EXISTS "${GOOGLETEST_LIBRARY_DIR}/gtest.lib")
            set_target_properties(GoogleTest::GTest PROPERTIES
                IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
                IMPORTED_IMPLIB "${GOOGLETEST_LIBRARY_DIR}/gtest.lib")
         endif()
+        
         if(EXISTS "${GOOGLETEST_SHAREDLIB_DIR}/gtest.dll")
-           set_target_properties(GoogleTest::GTest PROPERTIES               
+           set_target_properties(GoogleTest::GTest PROPERTIES
                IMPORTED_LOCATION "${GOOGLETEST_SHAREDLIB_DIR}/gtest.dll")
         endif()
     endif()   
+    
     if(NOT TARGET GoogleTest::GTestMain)
-        add_library(GoogleTest::GTestMain UNKNOWN IMPORTED)
+        add_library(GoogleTest::GTestMain ${LIBRARY_TYPE} IMPORTED)
+        
         set_target_properties(GoogleTest::GTestMain PROPERTIES
             INTERFACE_LINK_LIBRARIES "GoogleTest::GTest")
+        
         if(EXISTS "${GOOGLETEST_LIBRARY_DIR}/gtest_main.lib")
            set_target_properties(GoogleTest::GTestMain PROPERTIES
                IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
                IMPORTED_IMPLIB "${GOOGLETEST_LIBRARY_DIR}/gtest_main.lib")
         endif()
+        
         if(EXISTS "${GOOGLETEST_SHAREDLIB_DIR}/gtest_main.dll")
-           set_target_properties(GoogleTest::GTestMain PROPERTIES               
-               IMPORTED_LOCATION "${GOOGLETEST_SHAREDLIB_DIR}/gtest_main.dll")
+            set_target_properties(GoogleTest::GTestMain PROPERTIES
+                IMPORTED_LOCATION "${GOOGLETEST_SHAREDLIB_DIR}/gtest_main.dll")
         endif()
     endif()
+    
     if(NOT TARGET GoogleTest::GMock)
-        add_library(GoogleTest::GMock UNKNOWN IMPORTED)
+        add_library(GoogleTest::GMock ${LIBRARY_TYPE} IMPORTED)
+    
         set_target_properties(GoogleTest::GMock PROPERTIES
             INTERFACE_INCLUDE_DIRECTORIES "${GOOGLETEST_INCLUDE_DIRS}")
+    
         if(EXISTS "${GOOGLETEST_LIBRARY_DIR}/gmock.lib")
             set_target_properties(GoogleTest::GMock PROPERTIES
-               IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
-               IMPORTED_IMPLIB "${GOOGLETEST_LIBRARY_DIR}/gmock.lib"
-               INTERFACE_COMPILE_DEFINITIONS "GTEST_LINKED_AS_SHARED_LIBRARY")
+                IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
+                IMPORTED_IMPLIB "${GOOGLETEST_LIBRARY_DIR}/gmock.lib"
+                INTERFACE_COMPILE_DEFINITIONS "GTEST_LINKED_AS_SHARED_LIBRARY")
         endif()
+    
         if(EXISTS "${GOOGLETEST_SHAREDLIB_DIR}/gmock.dll")
-           set_target_properties(GoogleTest::GMock PROPERTIES               
+           set_target_properties(GoogleTest::GMock PROPERTIES
                IMPORTED_LOCATION "${GOOGLETEST_SHAREDLIB_DIR}/gmock.dll")
         endif()
     endif()
     if(NOT TARGET GoogleTest::GMockMain)
-        add_library(GoogleTest::GMockMain UNKNOWN IMPORTED)
+        add_library(GoogleTest::GMockMain ${LIBRARY_TYPE} IMPORTED)
+    
         set_target_properties(GoogleTest::GMockMain PROPERTIES
             INTERFACE_LINK_LIBRARIES "GoogleTest::GMock")
+    
         if(EXISTS "${GOOGLETEST_LIBRARY_DIR}/gmock_main.lib")
-           set_target_properties(GoogleTest::GMockMain PROPERTIES
-               IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
-               IMPORTED_IMPLIB "${GOOGLETEST_LIBRARY_DIR}/gmock_main.lib")
+            set_target_properties(GoogleTest::GMockMain PROPERTIES
+                IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
+                IMPORTED_IMPLIB "${GOOGLETEST_LIBRARY_DIR}/gmock_main.lib")
         endif()
+    
         if(EXISTS "${GOOGLETEST_SHAREDLIB_DIR}/gmock_main.dll")
-           set_target_properties(GoogleTest::GMockMain PROPERTIES               
-               IMPORTED_LOCATION "${GOOGLETEST_SHAREDLIB_DIR}/gmock_main.dll")
+            set_target_properties(GoogleTest::GMockMain PROPERTIES
+                IMPORTED_LOCATION "${GOOGLETEST_SHAREDLIB_DIR}/gmock_main.dll")
         endif()
     endif()
 endif()
